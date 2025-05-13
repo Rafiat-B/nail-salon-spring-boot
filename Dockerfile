@@ -1,17 +1,19 @@
-# Use a base image with Java 17
-FROM eclipse-temurin:17-jdk-alpine
+# Stage 1: Build the app using Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Create app directory
+# Stage 2: Run the app using a minimal JDK image
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy the JAR file into the image
-COPY target/nail-salon-app.jar app.jar
+# Copy only the built JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 COPY src/main/resources/templates /templates/
 
-# Expose default port (override using profile-specific ports)
 EXPOSE 9090
 
-# Add your environment variables to the ENTRYPOINT command
 ENTRYPOINT ["java", "-jar", "app.jar", \
             "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}", \
             "--spring.datasource.url=${SPRING_DATASOURCE_URL}", \
