@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: abcd1234
+      MYSQL_DATABASE: j2ee_proj
+    ports:
+      - "3305:3306"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

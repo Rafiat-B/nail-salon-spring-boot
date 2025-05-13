@@ -1,0 +1,17 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.btn-primary {
+    background-color: #d63384;
+    border-color: #d63384;
+}
+
+.btn-primary:hover {
+    background-color: #c2185b;
+    border-color: #c2185b;
+}
+
+.card {
+    border-radius: 1rem;
+}
